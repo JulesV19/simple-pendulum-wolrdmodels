@@ -197,9 +197,9 @@ if __name__ == "__main__":
     parser.add_argument("--n-layers",     type=int,   default=4)
     parser.add_argument("--lam",          type=float, default=0.5,
                         help="poids SIGReg")
-    parser.add_argument("--ema-momentum", type=float, default=0.99,
+    parser.add_argument("--ema-momentum", type=float, default=0.996,
                         help="momentum EMA du target encoder (τ)")
-    parser.add_argument("--rollout-k",    type=int,   default=5,
+    parser.add_argument("--rollout-k",    type=int,   default=2,
                         help="nombre de steps de rollout pour la pred loss")
     parser.add_argument("--n-proj",       type=int,   default=512,
                         help="projections SIGReg (robuste à ce choix)")

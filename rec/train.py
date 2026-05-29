@@ -1,14 +1,15 @@
 """
-Entraînement LeWorldModel (JEPA + SIGReg).
-
-Pas d'encodeur cible EMA, pas de VICReg, pas de masquage complexe.
-Un seul hyperparamètre effectif : λ (poids SIGReg).
+Entraînement LeWorldModelRec (reconstruction + perceptual + freq + SIGReg).
 
 Usage:
-  python3 train_lewm.py
-  python3 train_lewm.py --lam 0.1 --embed-dim 128 --epochs 100
-  python3 train_lewm.py --checkpoint checkpoints/lewm_best.pt   # resume
+  python3 rec/train.py
+  python3 rec/train.py --epochs 50 --batch-size 16
+  python3 rec/train.py --checkpoint checkpoints/rec/lewm_rec_best.pt   # resume
 """
+
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import argparse
 import time
@@ -18,8 +19,8 @@ import torch
 import torch.optim as optim
 import matplotlib.pyplot as plt
 
-from models.lewm import LeWorldModel
-from dataset import make_seq_dataloaders
+from models.rec.model import LeWorldModelRec
+from data.dataset import make_seq_dataloaders
 
 
 # ── Device ─────────────────────────────────────────────────────────────────────
@@ -33,7 +34,7 @@ def get_device():
 # ── Validation ─────────────────────────────────────────────────────────────────
 
 @torch.no_grad()
-def evaluate(model: LeWorldModel, loader, device) -> dict:
+def evaluate(model: LeWorldModelRec, loader, device) -> dict:
     model.eval()
     sums = {"loss": 0.0, "pred_loss": 0.0, "sigreg": 0.0}
     for frames, _ in loader:
@@ -58,7 +59,7 @@ def train(args):
     )
     print(f"Train : {len(train_loader)} batches  |  Val : {len(val_loader)} batches")
 
-    model = LeWorldModel(
+    model = LeWorldModelRec(
         embed_dim=args.embed_dim,
         hidden_dim=args.hidden_dim,
         lam=args.lam,
@@ -114,7 +115,7 @@ def train(args):
             m["loss"].backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             optimizer.step()
-            model.update_target()
+            model.update_target()  # no-op for AE
             for k in sums:
                 sums[k] += m[k].item()
 
@@ -137,7 +138,7 @@ def train(args):
                 "optimizer": optimizer.state_dict(),
                 "val_loss":  best_val,
                 "args":      vars(args),
-            }, ckpt_dir / "lewm_best.pt")
+            }, ckpt_dir / "lewm_rec_best.pt")
 
         elapsed = time.time() - t0
         lr_now  = optimizer.param_groups[0]["lr"]

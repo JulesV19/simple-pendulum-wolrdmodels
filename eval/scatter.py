@@ -7,9 +7,13 @@ Grille 2×2 :
   lignes   = θ        | ω
 
 Usage:
-  python3 scatter_probe.py --checkpoint checkpoints/lewm_best.pt
-  python3 scatter_probe.py --checkpoint checkpoints/lewm_best.pt --save visuals/scatter.png
+  python3 scatter_probe.py --checkpoint checkpoints/jepa/lewm_best.pt
+  python3 scatter_probe.py --checkpoint checkpoints/jepa/lewm_best.pt --save visuals/scatter.png
 """
+
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import argparse
 import numpy as np
@@ -20,8 +24,8 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader, random_split
 
-from models.lewm import LeWorldModel
-from dataset import PendulumSeqDataset
+from models.jepa.model import LeWorldModel
+from data.dataset import PendulumSeqDataset
 
 
 DARK = "#111"
@@ -180,7 +184,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--checkpoint",  default="checkpoints/lewm_best.pt")
+    parser.add_argument("--checkpoint",  default="checkpoints/jepa/lewm_best.pt")
     parser.add_argument("--dataset-dir", default="dataset/pendulum")
     parser.add_argument("--epochs-lin",  type=int, default=100)
     parser.add_argument("--epochs-mlp",  type=int, default=400)

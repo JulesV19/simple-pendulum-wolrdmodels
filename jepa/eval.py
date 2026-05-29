@@ -12,6 +12,10 @@ Usage:
   python3 eval_lewm.py --checkpoint checkpoints/lewm_best.pt --save visuals/eval.png
 """
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import argparse
 
 import numpy as np
@@ -23,8 +27,8 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from torch.utils.data import DataLoader, random_split
 
-from models.lewm import LeWorldModel
-from dataset import PendulumSeqDataset
+from models.jepa.model import LeWorldModel
+from data.dataset import PendulumSeqDataset
 
 
 DARK        = "#111"

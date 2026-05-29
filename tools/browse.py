@@ -16,6 +16,10 @@ Usage:
   python3 browse_dataset.py --dataset-dir dataset/pendulum --fps 15
 """
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt

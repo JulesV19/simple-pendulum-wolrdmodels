@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .encoder import ContextEncoder, TargetEncoder
-from .sigreg  import sigreg_loss
+from ..encoder import ContextEncoder, TargetEncoder
+from ..sigreg  import sigreg_loss
 
 
 class TransitionPredictor(nn.Module):

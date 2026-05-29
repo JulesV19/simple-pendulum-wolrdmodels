@@ -16,6 +16,10 @@ Usage:
   python3 imagine.py --gif --n-steps 40   # sauvegarde un GIF
 """
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import argparse
 import random
 from pathlib import Path
@@ -27,9 +31,9 @@ import matplotlib.animation as animation
 import matplotlib.gridspec as gridspec
 from matplotlib.widgets import Button, Slider
 
-from models.lewm    import LeWorldModel
+from models.jepa.model import LeWorldModel
 from models.decoder import Decoder
-from dataset        import PendulumSeqDataset
+from data.dataset import PendulumSeqDataset
 
 
 DARK  = "#111"

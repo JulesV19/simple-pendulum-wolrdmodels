@@ -6,6 +6,10 @@ Usage:
   python3 train_decoder.py --checkpoint checkpoints/lewm_best.pt --epochs 30 --lr 3e-4
 """
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import argparse
 import time
 from pathlib import Path
@@ -14,9 +18,9 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from models.lewm    import LeWorldModel
+from models.jepa.model import LeWorldModel
 from models.decoder import Decoder
-from dataset        import make_seq_dataloaders
+from data.dataset import make_seq_dataloaders
 
 
 def get_device():

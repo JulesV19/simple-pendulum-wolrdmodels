@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .encoder import ContextEncoder
-from .decoder import Decoder
-from .sigreg  import sigreg_loss
-from .losses  import PerceptualLoss, FrequencyLoss
+from ..encoder import ContextEncoder
+from ..decoder import Decoder
+from ..sigreg  import sigreg_loss
+from ..losses  import PerceptualLoss, FrequencyLoss
 
 
 class TransitionPredictor(nn.Module):

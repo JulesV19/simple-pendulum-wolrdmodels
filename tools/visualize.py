@@ -8,6 +8,10 @@ Usage:
   python3 visualize.py --save           # export as GIF
 """
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt

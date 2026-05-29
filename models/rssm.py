@@ -18,6 +18,7 @@ Différence fondamentale vs LeWorldModel (JEPA) :
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.checkpoint import checkpoint as grad_ckpt
 
 from .encoder import ContextEncoder
 from .ae import AEDecoder
@@ -227,7 +228,14 @@ class RSSM(nn.Module):
             h_start   = h_seq[:, :T_k].detach()          # (B, T_k, h_dim)
             h_rolled  = self._rollout_h(h_start, k)       # (B, T_k, h_dim)
             frame_tgt = frames[:, k:k + T_k]              # (B, T_k, 3, H, W)
-            roll_loss  = roll_loss + w * _wmse(self.decoder(h_rolled), frame_tgt, pixel_weight)
+            # Gradient checkpointing sur le décodeur : stocke seulement la sortie
+            # (B*T_k, 3, 64, 64), pas les activations deconv intermédiaires.
+            # Sans ça : ~9GB pour rollout_k=10, seq_len=100, B=32.
+            if self.training:
+                pred = grad_ckpt(self.decoder, h_rolled, use_reentrant=False)
+            else:
+                pred = self.decoder(h_rolled)
+            roll_loss  = roll_loss + w * _wmse(pred, frame_tgt, pixel_weight)
             weight_sum += w
             w *= self.rollout_gamma
         if weight_sum > 0:

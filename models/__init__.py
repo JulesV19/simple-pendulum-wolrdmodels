@@ -1,6 +1,8 @@
-from .encoder import ContextEncoder
-from .decoder import Decoder
-from .sigreg  import sigreg_loss
-from .lewm    import LeWorldModel, TransitionPredictor
-from .ae      import AutoEncoder
-from .rssm    import RSSM
+from .encoder  import ContextEncoder
+from .decoder  import Decoder
+from .sigreg   import sigreg_loss
+from .losses   import PerceptualLoss, FrequencyLoss
+from .lewm     import LeWorldModel, TransitionPredictor
+from .lewm_rec import LeWorldModelRec
+from .ae       import AutoEncoder
+from .rssm     import RSSM

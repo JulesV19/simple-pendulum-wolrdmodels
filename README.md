@@ -13,8 +13,8 @@ Comparaison empirique de deux approches de world model sur pendule simple :
 | real → imagined | real → imagined |
 
 ```bash
-python3 jepa/imagine.py --gif --traj-idx 0 --n-steps 60 --fps 15 --out visuals/jepa_demo.gif
-python3 rec/imagine.py  --gif --traj-idx 0 --n-steps 60 --fps 15 --out visuals/ae_demo.gif
+python3 jepa/imagine.py --gif --traj-idx 0 --n-steps 120 --fps 15 --out visuals/jepa_demo.gif
+python3 rec/imagine.py  --gif --traj-idx 0 --n-steps 120 --fps 15 --out visuals/ae_demo.gif
 ```
 
 ---

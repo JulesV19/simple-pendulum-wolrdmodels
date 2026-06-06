@@ -1,7 +1,14 @@
 # JEPA vs Autoencoder World Model
 
-Comparaison empirique de deux approches de world model sur pendule simple :
-**JEPA** (prédiction dans l'espace latent) contre une **AE** (reconstruction pixel).
+Un **world model** apprend une représentation interne d'un environnement à partir d'observations brutes (pixels), et prédit comment cet environnement évolue dans le temps — sans jamais accéder aux variables physiques sous-jacentes.
+
+Ce repo compare deux façons de construire cette représentation sur un pendule simple :
+- **JEPA** prédit directement dans l'espace latent, sans jamais reconstruire de pixels
+- **AE** reconstruit chaque frame et prédit dans l'espace latent via un décodeur partagé
+
+Ce compromis se lit directement dans les demos : le pendule imaginé par JEPA suit une trajectoire dynamiquement cohérente mais reste visuellement flou, car son encodeur n'a jamais reçu de signal de reconstruction pixel. L'AE produit des frames plus nettes mais sa dynamique imaginée dérive plus vite — la supervision pixel contraint davantage la représentation vers l'apparence que vers la physique.
+
+Inspiré de [LeCun (2022)](https://openreview.net/forum?id=BZ5a1r-kVsf), [I-JEPA — Assran et al. (CVPR 2023)](https://arxiv.org/abs/2301.08243) et [Le World Model — Maes et al. (2026)](https://arxiv.org/abs/2603.19312).
 
 ---
 
@@ -129,7 +136,3 @@ python3 eval/compare.py                                  # viewer côte-à-côte
 python3 tools/visualize_latent_3d.py --model both        # espace latent interactif
 ```
 
----
-
-> **Références :**
-> Maes et al., *"Le World Model"*, arXiv:2603.19312 (2026) · LeCun, *"A Path Towards Autonomous Machine Intelligence"* (2022) · Assran et al., *I-JEPA* (CVPR 2023)
